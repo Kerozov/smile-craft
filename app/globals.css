@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-dark: #14120f;
+  --bg-light: #faf7f1;
+  --accent-gold: #c9a15c;
+  --accent-mint: #7fa99b;
+  --text-dark: #1c1a17;
+  --text-light: #f5f1ea;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg-light font-body text-text-dark antialiased;
+  }
+
+  ::selection {
+    @apply bg-accent-gold/30 text-text-dark;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent-gold;
+  }
+}
+
+@layer utilities {
+  .section-padding {
+    @apply px-6 py-section md:px-12 lg:px-20;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
