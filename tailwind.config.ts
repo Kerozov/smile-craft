@@ -9,28 +9,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "bg-dark": "#14120F",
-        "bg-light": "#FAF7F1",
-        "accent-gold": "#C9A15C",
-        "accent-mint": "#7FA99B",
-        "text-dark": "#1C1A17",
-        "text-light": "#F5F1EA",
+        "bg-white": "#FFFFFF",
+        "bg-cream": "#F7F4EF",
+        "beige-primary": "#B8956A",
+        "beige-deep": "#9A7B55",
+        "beige-pale": "#EDE8E0",
+        "text-dark": "#3D3632",
+        "text-muted": "#7A6F68",
       },
       fontFamily: {
-        display: ["var(--font-fraunces)", "Georgia", "serif"],
-        body: ["var(--font-inter)", "system-ui", "sans-serif"],
-        mono: ["var(--font-space-mono)", "monospace"],
-      },
-      spacing: {
-        section: "120px",
+        display: ["var(--font-playfair)", "Georgia", "serif"],
+        body: ["var(--font-poppins)", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        card: "0 8px 32px rgba(0, 0, 0, 0.24)",
-        "card-hover": "0 16px 48px rgba(0, 0, 0, 0.32)",
-        glow: "0 0 24px rgba(201, 161, 92, 0.4)",
-      },
-      transitionDuration: {
-        card: "200ms",
+        soft: "0 4px 24px rgba(61, 54, 50, 0.06)",
+        card: "0 8px 32px rgba(61, 54, 50, 0.08)",
+        "card-hover": "0 16px 48px rgba(61, 54, 50, 0.12)",
+        header: "0 2px 20px rgba(61, 54, 50, 0.08)",
       },
       keyframes: {
         marquee: {
@@ -39,7 +34,7 @@ const config: Config = {
         },
       },
       animation: {
-        marquee: "marquee 40s linear infinite",
+        marquee: "marquee 45s linear infinite",
       },
     },
   },

@@ -9,7 +9,13 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface BeforeAfterSliderProps {
@@ -41,7 +47,10 @@ export default function BeforeAfterSlider({
   });
 
   const activePercent = shouldReduceMotion ? percent : smoothPercent;
-  const clipPath = useTransform(activePercent, (v) => `inset(0 ${100 - v}% 0 0)`);
+  const clipPath = useTransform(
+    activePercent,
+    (v) => `inset(0 ${100 - v}% 0 0)`
+  );
   const handleLeft = useTransform(activePercent, (v) => `${v}%`);
 
   const setFromClientX = useCallback(
@@ -84,11 +93,13 @@ export default function BeforeAfterSlider({
     return activePercent.on("change", (v) => setAriaValue(Math.round(v)));
   }, [activePercent]);
 
+  const isRemote = beforeImage.startsWith("http");
+
   return (
     <div className={cn("w-full", className)}>
       <div
         ref={containerRef}
-        className="relative aspect-[4/3] w-full cursor-col-resize overflow-hidden rounded-sm bg-bg-dark touch-none select-none"
+        className="relative aspect-[4/3] w-full cursor-col-resize overflow-hidden rounded-lg bg-beige-pale touch-none select-none"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -101,6 +112,7 @@ export default function BeforeAfterSlider({
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           draggable={false}
+          unoptimized={isRemote}
         />
 
         <motion.div className="absolute inset-0" style={{ clipPath }}>
@@ -111,11 +123,12 @@ export default function BeforeAfterSlider({
             className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             draggable={false}
+            unoptimized={isRemote}
           />
         </motion.div>
 
         <motion.div
-          className="pointer-events-none absolute inset-y-0 z-10 w-0.5 -translate-x-1/2 bg-accent-gold shadow-glow"
+          className="pointer-events-none absolute inset-y-0 z-10 w-0.5 -translate-x-1/2 bg-beige-primary"
           style={{ left: handleLeft }}
         />
 
@@ -133,28 +146,28 @@ export default function BeforeAfterSlider({
             tabIndex={0}
             onKeyDown={onKeyDown}
             onPointerDown={(e) => e.stopPropagation()}
-            className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border-2 border-accent-gold bg-bg-dark shadow-glow"
+            className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border-2 border-beige-primary bg-bg-white shadow-soft"
             whileHover={shouldReduceMotion ? undefined : { scale: 1.12 }}
             animate={{ scale: isDragging && !shouldReduceMotion ? 1.15 : 1 }}
             transition={{ duration: 0.2 }}
           >
             <span className="flex gap-0.5" aria-hidden="true">
-              <span className="h-3 w-0.5 rounded-full bg-accent-gold" />
-              <span className="h-3 w-0.5 rounded-full bg-accent-gold" />
+              <span className="h-3 w-0.5 rounded-full bg-beige-primary" />
+              <span className="h-3 w-0.5 rounded-full bg-beige-primary" />
             </span>
           </motion.button>
         </motion.div>
 
-        <span className="pointer-events-none absolute bottom-3 left-3 rounded-sm bg-bg-dark/75 px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-text-light">
+        <span className="pointer-events-none absolute bottom-3 left-3 rounded-full bg-bg-white/90 px-3 py-1 font-body text-[10px] uppercase tracking-wider text-text-dark">
           Преди
         </span>
-        <span className="pointer-events-none absolute bottom-3 right-3 rounded-sm bg-bg-dark/75 px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-text-light">
+        <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-bg-white/90 px-3 py-1 font-body text-[10px] uppercase tracking-wider text-text-dark">
           След
         </span>
       </div>
 
       {label && (
-        <p className="mt-3 font-body text-sm text-text-dark/80">{label}</p>
+        <p className="mt-3 font-body text-sm text-text-muted">{label}</p>
       )}
     </div>
   );

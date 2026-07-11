@@ -24,25 +24,23 @@ export const metadata: Metadata = {
 export default function RezultatiPage() {
   return (
     <>
-      <section className="section-padding bg-bg-dark pt-32">
+      <section className="section-padding bg-bg-cream">
         <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-gold">
-              Портфолио
-            </p>
-            <h1 className="mt-4 font-display text-3xl font-semibold text-text-light md:text-5xl">
+            <p className="eyebrow-label">Портфолио</p>
+            <h1 className="mt-4 font-display text-3xl font-normal text-text-dark md:text-4xl lg:text-5xl">
               Резултати, не обещания
             </h1>
-            <p className="mt-6 font-body text-lg leading-relaxed text-text-light/75">
+            <p className="mt-6 font-body text-lg leading-relaxed text-text-muted">
               Плъзнете разделителя, за да сравните преди и след. Всяка
-              трансформация е резултат от индивидуален план и занаятчийска
-              работа.
+              трансформация е резултат от индивидуален план и внимателно
+              лечение.
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      <section className="section-padding bg-bg-light">
+      <section className="section-padding bg-bg-white">
         <div className="mx-auto max-w-7xl">
           <ResultsGallery items={results} showFilters />
         </div>

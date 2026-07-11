@@ -19,30 +19,32 @@ export default function Marquee({ items, className }: MarqueeProps) {
 
   return (
     <div
-      className={cn("group relative overflow-hidden", className)}
+      className={cn("group relative mx-auto max-w-7xl px-6 md:px-12", className)}
       aria-label="Отзиви от пациенти"
     >
-      <div className="flex animate-marquee gap-8 group-hover:[animation-play-state:paused] motion-reduce:animate-none">
-        {duplicated.map((item, i) => (
-          <blockquote
-            key={`${item.id}-${i}`}
-            className="w-[320px] shrink-0 rounded-sm border border-bg-dark/5 bg-white p-6 md:w-[400px]"
-          >
-            <p className="font-body text-sm italic leading-relaxed text-text-dark/80">
-              &ldquo;{item.quote}&rdquo;
-            </p>
-            <footer className="mt-4">
-              <cite className="not-italic">
-                <span className="font-body text-sm font-medium text-text-dark">
-                  {item.author}
-                </span>
-                <span className="ml-2 font-mono text-xs text-text-dark/50">
-                  {item.location}
-                </span>
-              </cite>
-            </footer>
-          </blockquote>
-        ))}
+      <div className="marquee-fade overflow-hidden">
+        <div className="flex animate-marquee gap-6 py-2 group-hover:[animation-play-state:paused] motion-reduce:animate-none">
+          {duplicated.map((item, i) => (
+            <blockquote
+              key={`${item.id}-${i}`}
+              className="w-[300px] shrink-0 rounded-xl border border-beige-pale bg-bg-white p-6 shadow-soft md:w-[380px]"
+            >
+              <p className="font-body text-sm italic leading-relaxed text-text-muted">
+                &ldquo;{item.quote}&rdquo;
+              </p>
+              <footer className="mt-4">
+                <cite className="not-italic">
+                  <span className="font-body text-sm font-medium text-text-dark">
+                    {item.author}
+                  </span>
+                  <span className="ml-2 font-body text-xs text-text-muted">
+                    {item.location}
+                  </span>
+                </cite>
+              </footer>
+            </blockquote>
+          ))}
+        </div>
       </div>
     </div>
   );

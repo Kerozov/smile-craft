@@ -9,13 +9,9 @@ import { getLocationBySlug } from "@/lib/locations";
 import { getResultsByLocation } from "@/lib/results";
 import { siteConfig } from "@/lib/utils";
 
-interface LocationPageProps {
-  params: { slug: string };
-}
-
 function createLocationMetadata(city: string, slug: string): Metadata {
   const title = `Зъболекар в ${city} — Smile Craft`;
-  const description = `Smile Craft — бутикова дентална практика в ${city}. Д-р Ани Овардова предлага естетична стоматология, импланти, избелване и повече. Запишете час онлайн.`;
+  const description = `Smile Craft — дентална практика в ${city}. Д-р Ани Овардова предлага естетична стоматология, импланти, избелване и повече. Запишете час онлайн.`;
 
   return {
     title,
@@ -65,38 +61,36 @@ export default function LocationPageContent({
         ]}
       />
 
-      <section className="section-padding bg-bg-dark pt-32">
+      <section className="section-padding bg-bg-cream">
         <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-gold">
-              {location.nameBg.toUpperCase()}
-            </p>
-            <h1 className="mt-4 font-display text-3xl font-semibold text-text-light md:text-5xl">
+            <p className="eyebrow-label">{location.nameBg.toUpperCase()}</p>
+            <h1 className="mt-4 font-display text-3xl font-normal text-text-dark md:text-4xl lg:text-5xl">
               Зъболекар в {location.nameBg} — Smile Craft
             </h1>
-            <p className="mt-6 font-body text-lg leading-relaxed text-text-light/75">
+            <p className="mt-6 font-body text-lg leading-relaxed text-text-muted">
               {location.intro}
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      <section className="section-padding bg-bg-light">
+      <section className="section-padding bg-bg-white">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2">
           <ScrollReveal>
-            <h2 className="font-display text-2xl font-semibold text-text-dark">
+            <h2 className="font-display text-2xl font-normal text-text-dark">
               Адрес и работно време
             </h2>
             <address className="mt-6 not-italic">
-              <p className="font-mono text-sm leading-relaxed text-text-dark/80">
+              <p className="font-body text-sm leading-relaxed text-text-muted">
                 {location.address}
                 <br />
                 {location.postalCode} {location.city}
               </p>
-              <p className="mt-4 font-mono text-sm text-text-dark/80">
+              <p className="mt-4 font-body text-sm text-text-muted">
                 <a
                   href={`tel:${location.phone.replace(/\s/g, "")}`}
-                  className="hover:text-accent-gold"
+                  className="hover:text-beige-primary"
                 >
                   {location.phone}
                 </a>
@@ -106,7 +100,7 @@ export default function LocationPageContent({
               {location.hours.map((line) => (
                 <p
                   key={line}
-                  className="font-mono text-xs uppercase tracking-wider text-text-dark/60"
+                  className="font-body text-xs uppercase tracking-wider text-text-muted"
                 >
                   {line}
                 </p>
@@ -115,7 +109,7 @@ export default function LocationPageContent({
           </ScrollReveal>
 
           <ScrollReveal delay={0.1}>
-            <div className="aspect-video overflow-hidden rounded-sm bg-bg-dark/10">
+            <div className="aspect-video overflow-hidden rounded-xl border border-beige-pale bg-beige-pale">
               <iframe
                 title={`Карта на Smile Craft ${location.nameBg}`}
                 src={location.mapEmbedUrl}
@@ -130,23 +124,25 @@ export default function LocationPageContent({
       </section>
 
       {locationResults.length > 0 && (
-        <section className="section-padding bg-bg-dark">
+        <section className="section-padding bg-bg-cream">
           <div className="mx-auto max-w-7xl">
             <ScrollReveal>
-              <h2 className="font-display text-2xl font-semibold text-text-light md:text-3xl">
+              <h2 className="font-display text-2xl font-normal text-text-dark md:text-3xl">
                 Резултати от {location.nameBg}
               </h2>
             </ScrollReveal>
             <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {locationResults.map((result, i) => (
                 <ScrollReveal key={result.id} delay={i * 0.1}>
-                  <BeforeAfterSlider
-                    beforeImage={result.beforeImage}
-                    afterImage={result.afterImage}
-                    label={result.label}
-                    altBefore={result.altBefore}
-                    altAfter={result.altAfter}
-                  />
+                  <div className="overflow-hidden rounded-xl border border-beige-pale bg-bg-white p-2 shadow-soft">
+                    <BeforeAfterSlider
+                      beforeImage={result.beforeImage}
+                      afterImage={result.afterImage}
+                      label={result.label}
+                      altBefore={result.altBefore}
+                      altAfter={result.altAfter}
+                    />
+                  </div>
                 </ScrollReveal>
               ))}
             </div>
@@ -154,26 +150,26 @@ export default function LocationPageContent({
         </section>
       )}
 
-      <section className="section-padding bg-bg-light">
+      <section className="section-padding bg-bg-white">
         <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <h2 className="font-display text-2xl font-semibold text-text-dark">
+            <h2 className="font-display text-2xl font-normal text-text-dark">
               Услуги в {location.nameBg}
             </h2>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2">
               {location.services.map((service) => (
                 <li
                   key={service}
-                  className="flex items-center gap-2 font-body text-text-dark/80"
+                  className="flex items-center gap-2 font-body text-text-muted"
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent-gold" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-beige-primary" />
                   {service}
                 </li>
               ))}
             </ul>
             <Link
               href={`/zapazi-chas?grad=${location.slug}`}
-              className="mt-10 inline-block rounded-sm bg-accent-gold px-8 py-4 font-body text-sm font-medium text-bg-dark transition-colors hover:bg-accent-gold/90"
+              className="btn-primary mt-10"
             >
               Запази час в {location.nameBg}
             </Link>

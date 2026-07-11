@@ -39,7 +39,7 @@ function GalleryItem({
       transition={{ duration: 0.6, ease: "easeOut", delay: (index % 3) * 0.08 }}
     >
       <motion.div
-        className="overflow-hidden rounded-sm ring-1 ring-transparent transition-shadow duration-300 hover:shadow-glow hover:ring-accent-gold/50"
+        className="overflow-hidden rounded-xl border border-beige-pale bg-bg-white p-2 shadow-soft transition-shadow duration-300 hover:shadow-card hover:ring-1 hover:ring-beige-primary/30"
         whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
         transition={{ duration: 0.2 }}
       >
@@ -84,10 +84,10 @@ export default function ResultsGallery({
               aria-selected={activeFilter === tab.id}
               onClick={() => setActiveFilter(tab.id)}
               className={cn(
-                "rounded-sm px-4 py-2 font-mono text-xs uppercase tracking-wider transition-colors",
+                "rounded-full px-4 py-2 font-body text-xs uppercase tracking-wider transition-colors",
                 activeFilter === tab.id
-                  ? "bg-accent-gold text-bg-dark"
-                  : "bg-bg-dark/5 text-text-dark/70 hover:bg-bg-dark/10"
+                  ? "bg-beige-primary text-white"
+                  : "border border-beige-pale bg-bg-white text-text-muted hover:border-beige-primary hover:text-beige-primary"
               )}
             >
               {tab.label}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
-const headlineWords = ["Прецизност,", "поднесена", "като", "изкуство"];
+const headlineWords = ["Усмивка,", "на", "която", "можеш", "да", "разчиташ"];
 
 export default function Hero() {
   const shouldReduceMotion = useReducedMotion();
@@ -22,18 +22,17 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-bg-dark px-6 pt-24 md:px-12">
+    <section className="relative flex min-h-[calc(100dvh-var(--header-offset))] items-center justify-center overflow-hidden bg-bg-cream px-6 py-12 md:px-12 lg:px-20">
+      {/* Soft decorative blob */}
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,161,92,0.15)_0%,transparent_60%)]"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-beige-pale/60 blur-3xl"
         aria-hidden="true"
       />
 
       <div className="relative z-10 mx-auto max-w-4xl text-center">
-        <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-gold">
-          Пловдив / Рудозем / Девин
-        </p>
+        <p className="eyebrow-label">Пловдив · Рудозем · Девин</p>
 
-        <h1 className="mt-6 font-display text-4xl font-semibold leading-tight text-text-light md:text-6xl lg:text-7xl">
+        <h1 className="mt-6 font-display text-4xl font-normal leading-tight text-text-dark md:text-5xl lg:text-6xl">
           {headlineWords.map((word, i) => (
             <motion.span
               key={word}
@@ -49,33 +48,31 @@ export default function Hero() {
         </h1>
 
         <motion.p
-          className="mx-auto mt-8 max-w-2xl font-body text-lg leading-relaxed text-text-light/75 md:text-xl"
+          className="mx-auto mt-8 max-w-2xl font-body text-lg leading-relaxed text-text-muted md:text-xl"
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
         >
-          Д-р Ани Овардова създава усмивки в Пловдив, Рудозем и Девин с
-          занаятчийско внимание към всеки детайл
+          Д-р Ани Овардова и екипът ѝ се грижат за зъбите на пациенти в
+          Пловдив, Рудозем и Девин с внимание, спокойствие и модерни методи на
+          лечение
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.55 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.65 }}
         >
-          <Link
-            href="/zapazi-chas"
-            className="mt-10 inline-block rounded-sm bg-accent-gold px-8 py-4 font-body text-sm font-medium tracking-wide text-bg-dark transition-colors hover:bg-accent-gold/90"
-          >
+          <Link href="/zapazi-chas" className="btn-primary mt-10">
             Запази час
           </Link>
         </motion.div>
 
         <motion.div
-          className="mx-auto mt-16 h-px max-w-xs origin-left bg-accent-gold"
+          className="mx-auto mt-16 h-px max-w-xs origin-left bg-beige-primary/40"
           initial={{ scaleX: shouldReduceMotion ? 1 : 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.7 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
           aria-hidden="true"
         />
       </div>

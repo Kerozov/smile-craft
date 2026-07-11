@@ -34,21 +34,23 @@ export default function ServiceCard({ service, className }: ServiceCardProps) {
   return (
     <motion.div
       className={cn(
-        "rounded-sm border border-bg-dark/5 bg-white p-8 shadow-sm",
+        "rounded-xl border border-beige-pale bg-bg-white p-8 shadow-soft",
         className
       )}
       whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
       transition={{ duration: 0.2 }}
     >
-      <Icon
-        className="h-8 w-8 text-accent-gold"
-        strokeWidth={1.5}
-        aria-hidden="true"
-      />
-      <h3 className="mt-4 font-display text-xl font-medium text-text-dark">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-beige-pale">
+        <Icon
+          className="h-6 w-6 text-beige-primary"
+          strokeWidth={1.5}
+          aria-hidden="true"
+        />
+      </div>
+      <h3 className="mt-4 font-display text-xl font-normal text-text-dark">
         {service.title}
       </h3>
-      <p className="mt-3 font-body text-sm leading-relaxed text-text-dark/70">
+      <p className="mt-3 font-body text-sm leading-relaxed text-text-muted">
         {service.description}
       </p>
     </motion.div>

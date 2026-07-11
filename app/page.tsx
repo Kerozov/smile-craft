@@ -9,6 +9,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { locationList } from "@/lib/locations";
 import { services } from "@/lib/services";
 import { results, testimonials } from "@/lib/results";
+import { portraitPlaceholder } from "@/lib/utils";
 
 export default function HomePage() {
   const featuredResults = results.slice(0, 4);
@@ -18,31 +19,31 @@ export default function HomePage() {
       <Hero />
 
       {/* Results section */}
-      <section className="section-padding bg-bg-light">
+      <section className="section-padding bg-bg-white">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-gold">
-              Портфолио
-            </p>
-            <h2 className="mt-4 font-display text-3xl font-semibold text-text-dark md:text-5xl">
+            <p className="eyebrow-label">Портфолио</p>
+            <h2 className="mt-4 font-display text-3xl font-normal text-text-dark md:text-4xl lg:text-5xl">
               Резултати, не обещания
             </h2>
-            <p className="mt-4 max-w-2xl font-body text-text-dark/70">
-              Всяка усмивка е резултат от прецизна работа, планиране и
-              занаятчийско усърдие. Плъзнете, за да видите трансформацията.
+            <p className="mt-4 max-w-2xl font-body text-text-muted">
+              Всяка усмивка е резултат от внимателно планиране и прецизно
+              лечение. Плъзнете, за да видите трансформацията.
             </p>
           </ScrollReveal>
 
           <div className="mt-12 grid gap-8 md:grid-cols-2">
             {featuredResults.map((result, i) => (
               <ScrollReveal key={result.id} delay={i * 0.1}>
-                <BeforeAfterSlider
-                  beforeImage={result.beforeImage}
-                  afterImage={result.afterImage}
-                  label={result.label}
-                  altBefore={result.altBefore}
-                  altAfter={result.altAfter}
-                />
+                <div className="overflow-hidden rounded-xl border border-beige-pale bg-bg-white p-2 shadow-soft">
+                  <BeforeAfterSlider
+                    beforeImage={result.beforeImage}
+                    afterImage={result.afterImage}
+                    label={result.label}
+                    altBefore={result.altBefore}
+                    altAfter={result.altAfter}
+                  />
+                </div>
               </ScrollReveal>
             ))}
           </div>
@@ -50,7 +51,7 @@ export default function HomePage() {
           <ScrollReveal className="mt-10 text-center">
             <Link
               href="/rezultati"
-              className="inline-block font-body text-sm text-accent-gold hover:underline"
+              className="inline-block font-body text-sm text-beige-primary hover:underline"
             >
               Вижте всички резултати →
             </Link>
@@ -59,18 +60,16 @@ export default function HomePage() {
       </section>
 
       {/* Locations section */}
-      <section className="section-padding bg-bg-dark">
+      <section className="section-padding bg-bg-cream">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-gold">
-              Локации
-            </p>
-            <h2 className="mt-4 font-display text-3xl font-semibold text-text-light md:text-5xl">
-              Нашите ателиета
+            <p className="eyebrow-label">Локации</p>
+            <h2 className="mt-4 font-display text-3xl font-normal text-text-dark md:text-4xl lg:text-5xl">
+              Нашите кабинети
             </h2>
-            <p className="mt-4 max-w-2xl font-body text-text-light/70">
-              Три ателета в Пловдив, Рудозем и Девин — еднакъв висок
-              стандарт, локално удобство.
+            <p className="mt-4 max-w-2xl font-body text-text-muted">
+              Три кабинета в Пловдив, Рудозем и Девин — еднакво високо качество
+              на грижа, близо до вас
             </p>
           </ScrollReveal>
 
@@ -85,18 +84,16 @@ export default function HomePage() {
       </section>
 
       {/* Services section */}
-      <section className="section-padding bg-bg-light">
+      <section className="section-padding bg-bg-white">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-gold">
-              Услуги
-            </p>
-            <h2 className="mt-4 font-display text-3xl font-semibold text-text-dark md:text-5xl">
-              Занаятът
+            <p className="eyebrow-label">Услуги</p>
+            <h2 className="mt-4 font-display text-3xl font-normal text-text-dark md:text-4xl lg:text-5xl">
+              Нашите услуги
             </h2>
-            <p className="mt-4 max-w-2xl font-body text-text-dark/70">
-              От профилактика до комплексни естетични трансформации — всяка
-              процедура е изпълнена с внимание към детайла.
+            <p className="mt-4 max-w-2xl font-body text-text-muted">
+              От профилактика до сложни естетични възстановявания — всяка
+              процедура следва ясен протокол за вашата безопасност и комфорт
             </p>
           </ScrollReveal>
 
@@ -111,13 +108,13 @@ export default function HomePage() {
       </section>
 
       {/* About section */}
-      <section className="section-padding bg-bg-dark">
+      <section className="section-padding bg-bg-cream">
         <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
           <ScrollReveal>
-            <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-bg-dark/80">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-beige-pale bg-beige-pale shadow-soft">
               <Image
                 // TODO: replace with real photo
-                src="/dr-ovardova.jpg"
+                src={portraitPlaceholder}
                 alt="Д-р Ани Овардова — основател на Smile Craft"
                 fill
                 className="object-cover"
@@ -126,26 +123,24 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
           <ScrollReveal delay={0.15}>
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-gold">
-              За нас
-            </p>
-            <h2 className="mt-4 font-display text-3xl font-semibold text-text-light md:text-4xl">
+            <p className="eyebrow-label">За нас</p>
+            <h2 className="mt-4 font-display text-3xl font-normal text-text-dark md:text-4xl">
               За Д-р Овардова
             </h2>
-            <p className="mt-6 font-body leading-relaxed text-text-light/75">
-              Д-р Ани Овардова основава Smile Craft с една ясна философия:
-              стоматологията е занаят, който изисква еднакво внимание към
-              науката и естетиката. С над десет години опит и непрекъснато
-              професионално развитие, тя подхожда към всеки пациент като към
-              уникален проект — с прецизност, топлина и безкомпромисен стандарт.
+            <p className="mt-6 font-body leading-relaxed text-text-muted">
+              Д-р Ани Овардова основава Smile Craft с ясна цел: пациентите да
+              получават грижа, на която могат да се доверят. С над десет
+              години опит и постоянно обучение в съвременни методи на лечение,
+              тя отделя време да изслуша всеки пациент и да предложи решение,
+              съобразено с неговите нужди.
             </p>
-            <p className="mt-4 font-body leading-relaxed text-text-light/75">
-              Нейният екип споделя същата страст към детайла, съчетавайки
-              модерна технология с човешко отношение във всяко от трите ателие.
+            <p className="mt-4 font-body leading-relaxed text-text-muted">
+              Екипът ѝ споделя същия подход — модерно оборудване, съчетано с
+              внимание и спокойствие във всеки от трите кабинета.
             </p>
             <Link
               href="/za-nas"
-              className="mt-8 inline-block font-body text-sm text-accent-gold hover:underline"
+              className="mt-8 inline-block font-body text-sm text-beige-primary hover:underline"
             >
               Научете повече →
             </Link>
@@ -154,12 +149,10 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="section-padding overflow-hidden bg-bg-light">
+      <section className="section-padding bg-bg-white">
         <ScrollReveal className="mx-auto mb-10 max-w-7xl text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-gold">
-            Отзиви
-          </p>
-          <h2 className="mt-4 font-display text-3xl font-semibold text-text-dark md:text-4xl">
+          <p className="eyebrow-label">Отзиви</p>
+          <h2 className="mt-4 font-display text-3xl font-normal text-text-dark md:text-4xl">
             Думите на нашите пациенти
           </h2>
         </ScrollReveal>
@@ -167,20 +160,17 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="section-padding bg-bg-dark">
+      <section className="section-padding bg-gradient-to-b from-bg-cream to-bg-white">
         <ScrollReveal className="mx-auto max-w-3xl text-center">
-          <h2 className="font-display text-3xl font-semibold text-text-light md:text-5xl">
-            Готови за своята{" "}
-            <span className="text-accent-gold">трансформация</span>?
+          <h2 className="font-display text-3xl font-normal text-text-dark md:text-4xl lg:text-5xl">
+            Готови сте за{" "}
+            <span className="text-beige-primary">първата стъпка</span>?
           </h2>
-          <p className="mt-6 font-body text-text-light/70">
-            Запишете час в ателието, най-близо до вас — Пловдив, Рудозем или
+          <p className="mt-6 font-body text-text-muted">
+            Запишете час в кабинета, най-близо до вас — Пловдив, Рудозем или
             Девин.
           </p>
-          <Link
-            href="/zapazi-chas"
-            className="mt-10 inline-block rounded-sm bg-accent-gold px-10 py-4 font-body text-sm font-medium text-bg-dark transition-colors hover:bg-accent-gold/90"
-          >
+          <Link href="/zapazi-chas" className="btn-primary mt-10">
             Запази час
           </Link>
         </ScrollReveal>

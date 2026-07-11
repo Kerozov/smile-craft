@@ -3,12 +3,20 @@
 @tailwind utilities;
 
 :root {
-  --bg-dark: #14120f;
-  --bg-light: #faf7f1;
-  --accent-gold: #c9a15c;
-  --accent-mint: #7fa99b;
-  --text-dark: #1c1a17;
-  --text-light: #f5f1ea;
+  --bg-white: #ffffff;
+  --bg-cream: #f7f4ef;
+  --beige-primary: #b8956a;
+  --beige-deep: #9a7b55;
+  --beige-pale: #ede8e0;
+  --text-dark: #3d3632;
+  --text-muted: #7a6f68;
+  --header-offset: 5rem;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-offset: 7.75rem;
+  }
 }
 
 @layer base {
@@ -17,25 +25,60 @@
   }
 
   body {
-    @apply bg-bg-light font-body text-text-dark antialiased;
+    @apply bg-bg-white font-body text-text-dark antialiased;
   }
 
   ::selection {
-    @apply bg-accent-gold/30 text-text-dark;
+    @apply bg-beige-pale text-text-dark;
   }
 
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-accent-gold;
+    @apply outline-2 outline-offset-2 outline-beige-primary;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply px-6 py-20 md:px-12 md:py-24 lg:px-20 lg:py-28;
+  }
+
+  .page-hero-offset {
+    padding-top: calc(var(--header-offset) + 3rem);
+  }
+
+  .eyebrow-label {
+    @apply font-body text-xs font-medium uppercase tracking-[0.25em] text-beige-primary;
+  }
+
+  .btn-primary {
+    @apply inline-block rounded-full bg-beige-primary px-8 py-3.5 font-body text-sm font-medium text-white shadow-soft transition-all hover:bg-beige-deep hover:shadow-card;
+  }
+
+  .btn-outline {
+    @apply inline-block rounded-full border border-beige-pale bg-white px-6 py-3 font-body text-sm font-medium text-text-dark transition-colors hover:border-beige-primary hover:text-beige-primary;
   }
 }
 
 @layer utilities {
-  .section-padding {
-    @apply px-6 py-section md:px-12 lg:px-20;
-  }
-
   .text-balance {
     text-wrap: balance;
+  }
+
+  .marquee-fade {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
   }
 }
 

@@ -12,7 +12,7 @@ export const siteConfig = {
   phone: "+359 888 123 456",
   established: "2015",
   description:
-    "Бутикова дентална практика с ателиета в Пловдив, Рудозем и Девин. Прецизност, поднесена като изкуство.",
+    "Д-р Ани Овардова — зъболекар в Пловдив, Рудозем и Девин. Съвременно лечение, внимателен подход, три удобни локации. Запазете час онлайн.",
 };
 
 export type LocationSlug = "plovdiv" | "rudozem" | "devin";
@@ -29,3 +29,15 @@ export const categoryLabels: Record<ResultCategory, string> = {
   orthodontics: "Ортодонтия",
   aesthetic: "Естетична стоматология",
 };
+
+/** Placeholder images — TODO: replace with real photos */
+export function placeholderBefore(id: string) {
+  return `https://placehold.co/600x450/F7F4EF/9A7B55/png?text=Преди+${id}`;
+}
+
+export function placeholderAfter(id: string) {
+  return `https://placehold.co/600x450/EDE8E0/B8956A/png?text=След+${id}`;
+}
+
+export const portraitPlaceholder =
+  "https://placehold.co/600x750/F7F4EF/B8956A/png?text=Д-р+Овардова";

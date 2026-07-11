@@ -17,6 +17,12 @@ const gradMap: Record<string, LocationSlug> = {
   devin: "devin",
 };
 
+const inputClass =
+  "w-full rounded-lg border border-beige-pale bg-bg-white px-4 py-3 font-body text-text-dark placeholder:text-text-muted/50 focus:border-beige-primary focus:outline-none focus:ring-1 focus:ring-beige-primary/30";
+
+const labelClass =
+  "mb-2 block font-body text-xs font-medium uppercase tracking-wider text-text-muted";
+
 export default function BookingForm({ className }: BookingFormProps) {
   const searchParams = useSearchParams();
   const gradParam = searchParams.get("grad") ?? "";
@@ -37,14 +43,14 @@ export default function BookingForm({ className }: BookingFormProps) {
     return (
       <div
         className={cn(
-          "rounded-sm border border-accent-gold/30 bg-bg-dark/80 p-10 text-center",
+          "rounded-xl border border-beige-pale bg-bg-white p-10 text-center shadow-soft",
           className
         )}
       >
-        <p className="font-display text-2xl font-medium text-text-light">
+        <p className="font-display text-2xl font-normal text-text-dark">
           Благодарим ви!
         </p>
-        <p className="mt-4 font-body text-text-light/70">
+        <p className="mt-4 font-body text-text-muted">
           Получихме заявката ви. Екипът на Smile Craft ще се свърже с вас в
           рамките на един работен ден.
         </p>
@@ -60,7 +66,7 @@ export default function BookingForm({ className }: BookingFormProps) {
     >
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-2 block font-mono text-xs uppercase tracking-wider text-text-light/60">
+          <label htmlFor="name" className={labelClass}>
             Име и фамилия *
           </label>
           <input
@@ -69,12 +75,12 @@ export default function BookingForm({ className }: BookingFormProps) {
             type="text"
             required
             autoComplete="name"
-            className="w-full rounded-sm border border-white/10 bg-bg-dark/50 px-4 py-3 font-body text-text-light placeholder:text-text-light/30 focus:border-accent-gold focus:outline-none"
+            className={inputClass}
             placeholder="Вашето име"
           />
         </div>
         <div>
-          <label htmlFor="phone" className="mb-2 block font-mono text-xs uppercase tracking-wider text-text-light/60">
+          <label htmlFor="phone" className={labelClass}>
             Телефон *
           </label>
           <input
@@ -83,14 +89,14 @@ export default function BookingForm({ className }: BookingFormProps) {
             type="tel"
             required
             autoComplete="tel"
-            className="w-full rounded-sm border border-white/10 bg-bg-dark/50 px-4 py-3 font-body text-text-light placeholder:text-text-light/30 focus:border-accent-gold focus:outline-none"
+            className={inputClass}
             placeholder="+359 ..."
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="email" className="mb-2 block font-mono text-xs uppercase tracking-wider text-text-light/60">
+        <label htmlFor="email" className={labelClass}>
           Имейл
         </label>
         <input
@@ -98,14 +104,14 @@ export default function BookingForm({ className }: BookingFormProps) {
           name="email"
           type="email"
           autoComplete="email"
-          className="w-full rounded-sm border border-white/10 bg-bg-dark/50 px-4 py-3 font-body text-text-light placeholder:text-text-light/30 focus:border-accent-gold focus:outline-none"
+          className={inputClass}
           placeholder="email@example.com"
         />
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <label htmlFor="location" className="mb-2 block font-mono text-xs uppercase tracking-wider text-text-light/60">
+          <label htmlFor="location" className={labelClass}>
             Локация *
           </label>
           <select
@@ -113,10 +119,10 @@ export default function BookingForm({ className }: BookingFormProps) {
             name="location"
             required
             defaultValue={defaultLocation}
-            className="w-full rounded-sm border border-white/10 bg-bg-dark/50 px-4 py-3 font-body text-text-light focus:border-accent-gold focus:outline-none"
+            className={inputClass}
           >
             <option value="" disabled>
-              Изберете ателие
+              Изберете кабинет
             </option>
             {locationList.map((loc) => (
               <option key={loc.slug} value={loc.slug}>
@@ -126,14 +132,10 @@ export default function BookingForm({ className }: BookingFormProps) {
           </select>
         </div>
         <div>
-          <label htmlFor="service" className="mb-2 block font-mono text-xs uppercase tracking-wider text-text-light/60">
+          <label htmlFor="service" className={labelClass}>
             Услуга
           </label>
-          <select
-            id="service"
-            name="service"
-            className="w-full rounded-sm border border-white/10 bg-bg-dark/50 px-4 py-3 font-body text-text-light focus:border-accent-gold focus:outline-none"
-          >
+          <select id="service" name="service" className={inputClass}>
             <option value="">Изберете услуга</option>
             {services.map((s) => (
               <option key={s.id} value={s.id}>
@@ -145,26 +147,21 @@ export default function BookingForm({ className }: BookingFormProps) {
       </div>
 
       <div>
-        <label htmlFor="date" className="mb-2 block font-mono text-xs uppercase tracking-wider text-text-light/60">
+        <label htmlFor="date" className={labelClass}>
           Предпочитана дата
         </label>
-        <input
-          id="date"
-          name="date"
-          type="date"
-          className="w-full rounded-sm border border-white/10 bg-bg-dark/50 px-4 py-3 font-body text-text-light focus:border-accent-gold focus:outline-none"
-        />
+        <input id="date" name="date" type="date" className={inputClass} />
       </div>
 
       <div>
-        <label htmlFor="message" className="mb-2 block font-mono text-xs uppercase tracking-wider text-text-light/60">
+        <label htmlFor="message" className={labelClass}>
           Съобщение
         </label>
         <textarea
           id="message"
           name="message"
           rows={4}
-          className="w-full resize-none rounded-sm border border-white/10 bg-bg-dark/50 px-4 py-3 font-body text-text-light placeholder:text-text-light/30 focus:border-accent-gold focus:outline-none"
+          className={cn(inputClass, "resize-none")}
           placeholder="Споделете ни повече за вашите нужди..."
         />
       </div>
@@ -172,7 +169,7 @@ export default function BookingForm({ className }: BookingFormProps) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-sm bg-accent-gold px-8 py-4 font-body text-sm font-medium text-bg-dark transition-colors hover:bg-accent-gold/90 disabled:opacity-60 md:w-auto"
+        className="btn-primary w-full disabled:opacity-60 md:w-auto"
       >
         {loading ? "Изпращане..." : "Изпрати заявка"}
       </button>
