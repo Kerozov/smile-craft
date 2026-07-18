@@ -10,12 +10,13 @@
   --beige-pale: #ede8e0;
   --text-dark: #3d3632;
   --text-muted: #7a6f68;
-  --header-offset: 5rem;
+  --header-offset: 4.5rem;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   :root {
-    --header-offset: 7.75rem;
+    /* top contact strip (~2.5rem) + main bar (~4.75rem) */
+    --header-offset: 7.25rem;
   }
 }
 
