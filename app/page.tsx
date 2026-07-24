@@ -6,6 +6,7 @@ import LocationCard from "@/components/LocationCard";
 import ServiceCard from "@/components/ServiceCard";
 import Marquee from "@/components/Marquee";
 import ScrollReveal from "@/components/ScrollReveal";
+import OrthodonticsSection from "@/components/OrthodonticsSection";
 import { locationList } from "@/lib/locations";
 import { services } from "@/lib/services";
 import { results, testimonials } from "@/lib/results";
@@ -18,7 +19,8 @@ export default function HomePage() {
     <>
       <Hero />
 
-      {/* Results section */}
+      <OrthodonticsSection />
+
       <section className="section-padding bg-bg-white">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
@@ -59,7 +61,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Locations section */}
       <section className="section-padding bg-bg-cream">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
@@ -103,7 +104,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Services section */}
       <section className="section-padding bg-bg-white">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
@@ -112,8 +112,8 @@ export default function HomePage() {
               Нашите услуги
             </h2>
             <p className="mt-4 max-w-2xl font-body text-text-muted">
-              От профилактика до сложни естетични възстановявания — всяка
-              процедура следва ясен протокол за вашата безопасност и комфорт
+              От ортодонтия и естетика до профилактика — всяка процедура следва
+              ясен протокол за вашата безопасност и комфорт
             </p>
           </ScrollReveal>
 
@@ -127,7 +127,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About section */}
       <section className="section-padding bg-bg-cream">
         <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
           <ScrollReveal>
@@ -168,7 +167,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials */}
       <section className="section-padding bg-bg-white">
         <ScrollReveal className="mx-auto mb-10 max-w-7xl text-center">
           <p className="eyebrow-label">Отзиви</p>
@@ -179,7 +177,6 @@ export default function HomePage() {
         <Marquee items={testimonials} />
       </section>
 
-      {/* Final CTA */}
       <section className="section-padding bg-gradient-to-b from-bg-cream to-bg-white">
         <ScrollReveal className="mx-auto max-w-3xl text-center">
           <h2 className="font-display text-3xl font-normal text-text-dark md:text-4xl lg:text-5xl">

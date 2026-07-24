@@ -15,6 +15,13 @@ export interface Service {
 
 export const services: Service[] = [
   {
+    id: "orthodontics",
+    title: "Ортодонтско лечение",
+    description:
+      "Водещ фокус на практиката — изправяне с модерни брекети и прозрачни алайнери, според вашия случай.",
+    icon: "align-center",
+  },
+  {
     id: "prophylaxis",
     title: "Профилактика и хигиена",
     description:
@@ -34,13 +41,6 @@ export const services: Service[] = [
     description:
       "Трайни решения за липсващи зъби с премиум имплантни системи и 3D планиране за перфектна интеграция.",
     icon: "crown",
-  },
-  {
-    id: "orthodontics",
-    title: "Ортодонтско лечение",
-    description:
-      "Изправяне на зъбни редици с модерни брекети и прозрачни алайнери — дискретно и ефективно.",
-    icon: "align-center",
   },
   {
     id: "whitening",

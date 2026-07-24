@@ -26,7 +26,11 @@ const labelClass =
 export default function BookingForm({ className }: BookingFormProps) {
   const searchParams = useSearchParams();
   const gradParam = searchParams.get("grad") ?? "";
+  const serviceParam = searchParams.get("service") ?? "";
   const defaultLocation = gradMap[gradParam] ?? "";
+  const defaultService = services.some((s) => s.id === serviceParam)
+    ? serviceParam
+    : "";
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -135,7 +139,7 @@ export default function BookingForm({ className }: BookingFormProps) {
           <label htmlFor="service" className={labelClass}>
             Услуга
           </label>
-          <select id="service" name="service" className={inputClass}>
+          <select id="service" name="service" defaultValue={defaultService} className={inputClass}>
             <option value="">Изберете услуга</option>
             {services.map((s) => (
               <option key={s.id} value={s.id}>
