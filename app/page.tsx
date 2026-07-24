@@ -68,8 +68,28 @@ export default function HomePage() {
               Нашите кабинети
             </h2>
             <p className="mt-4 max-w-2xl font-body text-text-muted">
-              Три кабинета в Пловдив, Рудозем и Девин — еднакво високо качество
-              на грижа, близо до вас
+              Три кабинета —{" "}
+              <Link
+                href="/plovdiv"
+                className="text-beige-primary hover:underline"
+              >
+                Пловдив
+              </Link>
+              ,{" "}
+              <Link
+                href="/rudozem"
+                className="text-beige-primary hover:underline"
+              >
+                Рудозем
+              </Link>{" "}
+              и{" "}
+              <Link
+                href="/devin"
+                className="text-beige-primary hover:underline"
+              >
+                Девин
+              </Link>{" "}
+              — еднакво високо качество на грижа, близо до вас
             </p>
           </ScrollReveal>
 

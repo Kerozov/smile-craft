@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CityLinks from "@/components/CityLinks";
 import { locationList } from "@/lib/locations";
 import { siteConfig } from "@/lib/utils";
 
@@ -14,9 +15,10 @@ export default function Footer() {
             <p className="mt-3 font-body text-sm text-text-muted">
               {siteConfig.doctor}
             </p>
-            <p className="mt-2 font-body text-xs uppercase tracking-widest text-beige-primary">
-              Пловдив · Рудозем · Девин
-            </p>
+            <CityLinks
+              className="mt-2 justify-start"
+              linkClassName="font-body text-xs uppercase tracking-widest text-beige-primary"
+            />
             <p className="mt-1 font-body text-xs text-text-muted">
               От {siteConfig.established} г.
             </p>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import CityLinks from "@/components/CityLinks";
 
 const headlineWords = ["Усмивка,", "на", "която", "можеш", "да", "разчиташ"];
 
@@ -30,7 +31,10 @@ export default function Hero() {
       />
 
       <div className="relative z-10 mx-auto max-w-4xl text-center">
-        <p className="eyebrow-label">Пловдив · Рудозем · Девин</p>
+        <CityLinks
+          className="eyebrow-label"
+          linkClassName="eyebrow-label"
+        />
 
         <h1 className="mt-6 font-display text-4xl font-normal leading-tight text-text-dark md:text-5xl lg:text-6xl">
           {headlineWords.map((word, i) => (
@@ -53,9 +57,29 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
         >
-          Д-р Ани Овардова и екипът ѝ се грижат за зъбите на пациенти в
-          Пловдив, Рудозем и Девин с внимание, спокойствие и модерни методи на
-          лечение
+          Д-р Ани Овардова и екипът ѝ се грижат за зъбите на пациенти с
+          внимание, спокойствие и модерни методи на лечение — в{" "}
+          <Link
+            href="/plovdiv"
+            className="text-beige-primary underline-offset-2 hover:underline"
+          >
+            Пловдив
+          </Link>
+          ,{" "}
+          <Link
+            href="/rudozem"
+            className="text-beige-primary underline-offset-2 hover:underline"
+          >
+            Рудозем
+          </Link>{" "}
+          и{" "}
+          <Link
+            href="/devin"
+            className="text-beige-primary underline-offset-2 hover:underline"
+          >
+            Девин
+          </Link>
+          .
         </motion.p>
 
         <motion.div
