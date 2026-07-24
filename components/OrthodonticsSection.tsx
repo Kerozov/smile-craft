@@ -72,6 +72,9 @@ const CHAPTERS = [
   },
 ];
 
+/** Width scale across the arch for natural smile rhythm */
+const TOOTH_SCALE = [0.9, 0.82, 1, 1.08, 1.08, 1, 0.82, 0.9];
+
 function Tooth({
   index,
   progress,
@@ -84,6 +87,7 @@ function Tooth({
   const c = CHAOS[index];
   const a0 = 0.12 + index * 0.07;
   const a1 = 0.55 + index * 0.05;
+  const size = TOOTH_SCALE[index];
 
   const rotate = useTransform(
     progress,
@@ -95,7 +99,7 @@ function Tooth({
   const scale = useTransform(
     progress,
     [a0, a1],
-    reduceMotion ? [1, 1] : [0.72, 1]
+    reduceMotion ? [size, size] : [size * 0.72, size]
   );
 
   const bracketOp = useTransform(
@@ -109,18 +113,24 @@ function Tooth({
       className="relative flex flex-col items-center will-change-transform"
       style={{ rotate, x, y, scale }}
     >
-      <div className="relative h-24 w-14 rounded-t-[18px] rounded-b-[7px] bg-gradient-to-b from-white via-[#faf6f0] to-[#e8dfd2] shadow-[inset_0_-6px_12px_rgba(61,54,50,0.08),0_16px_40px_rgba(61,54,50,0.22)] md:h-32 md:w-[4.5rem] xl:h-40 xl:w-20">
-        <div className="absolute inset-x-2.5 top-2.5 h-3 rounded-full bg-white/90" />
-        <div className="absolute inset-x-3 top-[32%] h-px bg-[#d9cec0]/90" />
-        <div className="absolute inset-x-3 top-[58%] h-px bg-[#d9cec0]/70" />
+      <div className="relative h-40 w-[4.5rem] md:h-48 md:w-[5.5rem] xl:h-56 xl:w-24">
+        {/* Perfect classic tooth pictogram */}
+        <img
+          // TODO: replace with real photo / custom illustration if needed
+          src="/orthodontics/tooth.png"
+          alt=""
+          draggable={false}
+          className="pointer-events-none h-full w-full object-contain select-none"
+        />
+
+        {/* Orthodontic bracket on crown */}
         <motion.div
           style={{ opacity: bracketOp }}
-          className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-[5px] border-2 border-[#8a6d4a] bg-beige-primary shadow-[0_0_22px_rgba(184,149,106,0.65)] md:h-6 md:w-6"
+          className="absolute left-1/2 top-[32%] z-10 flex h-5 w-5 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[3px] border-[1.5px] border-[#7a6144] bg-beige-primary shadow-[0_0_14px_rgba(184,149,106,0.55)] md:h-[22px] md:w-[22px]"
         >
-          <div className="absolute inset-1 rounded-[2px] bg-[#f3e8d8]" />
+          <div className="h-2 w-2 rounded-[1px] bg-[#f6ecde]" />
         </motion.div>
       </div>
-      <div className="h-4 w-11 rounded-b-full bg-[#dbb0a8] md:w-14" />
     </motion.div>
   );
 }
@@ -299,7 +309,7 @@ function SmileStage({
           className="relative flex items-end justify-center gap-1.5 md:gap-2.5"
           aria-hidden="true"
         >
-          <div className="pointer-events-none absolute -bottom-2 left-1/2 h-14 w-[110%] -translate-x-1/2 rounded-[100%] bg-[#efd0c8]/55 blur-[2px]" />
+          <div className="pointer-events-none absolute top-[12%] left-1/2 h-10 w-[100%] -translate-x-1/2 rounded-[100%] bg-[#efd0c8]/35 blur-[2px]" />
 
           {Array.from({ length: TEETH }).map((_, i) => (
             <Tooth
@@ -312,7 +322,7 @@ function SmileStage({
 
           <motion.div
             style={{ opacity: wireOp, scaleX: wireScale }}
-            className="pointer-events-none absolute left-1/2 top-[44%] z-30 h-[3px] w-[98%] origin-center -translate-x-1/2 rounded-full bg-gradient-to-r from-transparent via-beige-deep to-transparent shadow-[0_0_16px_rgba(154,123,85,0.55)]"
+            className="pointer-events-none absolute left-1/2 top-[34%] z-30 h-[3px] w-[94%] origin-center -translate-x-1/2 rounded-full bg-gradient-to-r from-transparent via-beige-deep to-transparent shadow-[0_0_16px_rgba(154,123,85,0.55)]"
           />
         </div>
       </motion.div>
