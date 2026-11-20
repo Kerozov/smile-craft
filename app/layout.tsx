@@ -1,23 +1,31 @@
-import type { Metadata } from "next";
-import { Playfair_Display, Poppins } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Manrope, Playfair_Display } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SmoothScroll from "@/components/SmoothScroll";
 import { siteConfig } from "@/lib/utils";
 import "./globals.css";
 
-const playfair = Playfair_Display({
+const display = Playfair_Display({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-playfair",
+  variable: "--font-display",
   weight: ["400", "500"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
-const poppins = Poppins({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-poppins",
-  weight: ["300", "400", "500", "600"],
+// Poppins няма кирилица — текстът падаше на системен шрифт. Manrope я има.
+const body = Manrope({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#FBF8F3",
+  colorScheme: "light",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -70,7 +78,7 @@ export default function RootLayout({
   return (
     <html
       lang="bg"
-      className={`${playfair.variable} ${poppins.variable} h-full`}
+      className={`${display.variable} ${body.variable}`}
     >
       <head>
         <script
@@ -80,9 +88,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-screen flex-col">
+        <SmoothScroll />
         <Header />
-        <main className="flex-1 pt-[var(--header-offset)]">{children}</main>
+        <main className="flex-1">{children}</main>
         <Footer />
       </body>
     </html>

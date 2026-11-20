@@ -1,10 +1,13 @@
 import type { LocationSlug, ResultCategory } from "./utils";
-import { placeholderAfter, placeholderBefore } from "./utils";
 
 export interface ResultItem {
   id: string;
-  beforeImage: string;
-  afterImage: string;
+  /**
+   * Реални снимки (напр. "/results/1-before.jpg"). Докато ги няма, сайтът
+   * показва векторна илюстрация според категорията — без сиви „placeholder“ кутии.
+   */
+  beforeImage?: string;
+  afterImage?: string;
   label: string;
   altBefore: string;
   altAfter: string;
@@ -15,10 +18,6 @@ export interface ResultItem {
 export const results: ResultItem[] = [
   {
     id: "1",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("1"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("1"),
     label: "Естетична реставрация",
     altBefore: "Преди естетична реставрация — пациент на Smile Craft Пловдив",
     altAfter: "След естетична реставрация — пациент на Smile Craft Пловдив",
@@ -27,10 +26,6 @@ export const results: ResultItem[] = [
   },
   {
     id: "2",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("2"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("2"),
     label: "Избелване на зъби",
     altBefore: "Преди избелване на зъби — пациент на Smile Craft",
     altAfter: "След избелване на зъби — пациент на Smile Craft",
@@ -39,10 +34,6 @@ export const results: ResultItem[] = [
   },
   {
     id: "3",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("3"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("3"),
     label: "Дентален имплант",
     altBefore: "Преди дентален имплант — пациент на Smile Craft Рудозем",
     altAfter: "След дентален имплант — пациент на Smile Craft Рудозем",
@@ -51,10 +42,6 @@ export const results: ResultItem[] = [
   },
   {
     id: "4",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("4"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("4"),
     label: "Ортодонтско лечение",
     altBefore: "Преди ортодонтско лечение — пациент на Smile Craft Девин",
     altAfter: "След ортодонтско лечение — пациент на Smile Craft Девин",
@@ -63,10 +50,6 @@ export const results: ResultItem[] = [
   },
   {
     id: "5",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("5"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("5"),
     label: "Фасети",
     altBefore: "Преди фасети — пациент на Smile Craft Пловдив",
     altAfter: "След фасети — пациент на Smile Craft Пловдив",
@@ -75,10 +58,6 @@ export const results: ResultItem[] = [
   },
   {
     id: "6",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("6"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("6"),
     label: "Професионално избелване",
     altBefore: "Преди професионално избелване — пациент на Smile Craft Рудозем",
     altAfter: "След професионално избелване — пациент на Smile Craft Рудозем",
@@ -87,10 +66,6 @@ export const results: ResultItem[] = [
   },
   {
     id: "7",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("7"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("7"),
     label: "Имплант и корона",
     altBefore: "Преди имплант и корона — пациент на Smile Craft Пловдив",
     altAfter: "След имплант и корона — пациент на Smile Craft Пловдив",
@@ -99,10 +74,6 @@ export const results: ResultItem[] = [
   },
   {
     id: "8",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("8"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("8"),
     label: "Естетичен бондинг",
     altBefore: "Преди естетичен бондинг — пациент на Smile Craft Девин",
     altAfter: "След естетичен бондинг — пациент на Smile Craft Девин",
@@ -111,10 +82,6 @@ export const results: ResultItem[] = [
   },
   {
     id: "9",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("9"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("9"),
     label: "Алайнери",
     altBefore: "Преди лечение с алайнери — пациент на Smile Craft Пловдив",
     altAfter: "След лечение с алайнери — пациент на Smile Craft Пловдив",
@@ -123,10 +90,6 @@ export const results: ResultItem[] = [
   },
   {
     id: "10",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("10"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("10"),
     label: "Избелване — комбинирано",
     altBefore: "Преди комбинирано избелване — пациент на Smile Craft Девин",
     altAfter: "След комбинирано избелване — пациент на Smile Craft Девин",
@@ -135,10 +98,6 @@ export const results: ResultItem[] = [
   },
   {
     id: "11",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("11"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("11"),
     label: "Пълна естетична трансформация",
     altBefore: "Преди пълна естетична трансформация — Smile Craft",
     altAfter: "След пълна естетична трансформация — Smile Craft",
@@ -147,10 +106,6 @@ export const results: ResultItem[] = [
   },
   {
     id: "12",
-    // TODO: replace with real photo
-    beforeImage: placeholderBefore("12"),
-    // TODO: replace with real photo
-    afterImage: placeholderAfter("12"),
     label: "Имплантология",
     altBefore: "Преди имплантология — пациент на Smile Craft Рудозем",
     altAfter: "След имплантология — пациент на Smile Craft Рудозем",
