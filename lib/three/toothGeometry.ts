@@ -207,8 +207,6 @@ function polygonize(sdf: (x: number, y: number, z: number) => number, resolution
   raw.setAttribute("position", new BufferAttribute(positions, 3));
   const geo = mergeVertices(raw, 1e-4);
   geo.computeVertexNormals();
-  geo.computeBoundingBox();
-  geo.computeBoundingSphere();
 
   raw.dispose();
   mc.geometry.dispose();
@@ -217,26 +215,39 @@ function polygonize(sdf: (x: number, y: number, z: number) => number, resolution
   return geo;
 }
 
-const cache = new Map<string, BufferGeometry>();
+/** Описание на зъб — сериализуемо, за да може да се генерира в Web Worker */
+export type ToothSpec = { type: "hero"; resolution: number } | { type: "crown"; kind: ToothKind; resolution: number };
 
-export function getHeroToothGeometry(resolution = 84) {
-  const key = `hero-${resolution}`;
-  if (!cache.has(key)) {
-    cache.set(
-      key,
-      polygonize((x, y, z) => sdMolar(x * 0.95, y - 0.05, z * 0.95, true), resolution)
-    );
-  }
-  return cache.get(key)!;
+export type ToothArrays = {
+  position: Float32Array;
+  normal: Float32Array;
+  index: Uint32Array;
+};
+
+export const specKey = (s: ToothSpec) => (s.type === "hero" ? `hero-${s.resolution}` : `${s.kind}-${s.resolution}`);
+
+/** Тежката част (SDF + marching cubes). Вика се във worker-а. */
+export function buildToothArrays(spec: ToothSpec): ToothArrays {
+  const sdf =
+    spec.type === "hero"
+      ? (x: number, y: number, z: number) => sdMolar(x * 0.95, y - 0.05, z * 0.95, true)
+      : (x: number, y: number, z: number) => sdCrown(spec.kind, x, y, z);
+  const geo = polygonize(sdf, spec.resolution);
+  const out = {
+    position: geo.getAttribute("position").array as Float32Array,
+    normal: geo.getAttribute("normal").array as Float32Array,
+    index: Uint32Array.from(geo.index!.array),
+  };
+  geo.dispose();
+  return out;
 }
 
-export function getCrownGeometry(kind: ToothKind, resolution = 56) {
-  const key = `${kind}-${resolution}`;
-  if (!cache.has(key)) {
-    cache.set(
-      key,
-      polygonize((x, y, z) => sdCrown(kind, x, y, z), resolution)
-    );
-  }
-  return cache.get(key)!;
+export function arraysToGeometry(a: ToothArrays) {
+  const geo = new BufferGeometry();
+  geo.setAttribute("position", new BufferAttribute(a.position, 3));
+  geo.setAttribute("normal", new BufferAttribute(a.normal, 3));
+  geo.setIndex(new BufferAttribute(a.index, 1));
+  geo.computeBoundingBox();
+  geo.computeBoundingSphere();
+  return geo;
 }

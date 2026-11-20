@@ -13,7 +13,7 @@ export default function StudioLights() {
       <directionalLight position={[3, 5, 4]} intensity={1.6} color="#fffaf3" />
       <directionalLight position={[-4, 2, -2]} intensity={0.6} color="#ffe7cf" />
 
-      <Environment resolution={256} frames={1}>
+      <Environment resolution={128} frames={1}>
         <color attach="background" args={["#f6efe6"]} />
         <Lightformer
           form="rect"
