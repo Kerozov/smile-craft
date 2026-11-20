@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ContactShadows, Float } from "@react-three/drei";
+import { Float } from "@react-three/drei";
 import { Group, MathUtils, Mesh } from "three";
 import StudioLights from "./StudioLights";
 import Warmup from "./Warmup";
+import SoftShadow from "./SoftShadow";
 import { createEnamelMaterial, createGoldMaterial, createPearlMaterial } from "./materials";
 import { loadTooth } from "@/lib/three/loadTooth";
 import type { BufferGeometry } from "three";
@@ -192,18 +193,7 @@ export default function HeroScene({
       <Orbits reduceMotion={reduceMotion} />
       <Pearls reduceMotion={reduceMotion} />
 
-      {ready && (
-        <ContactShadows
-          position={[0, -1.85, 0]}
-          opacity={0.32}
-          scale={7}
-          blur={2.6}
-          far={3.2}
-          resolution={256}
-          color="#8a6e4c"
-          frames={reduceMotion ? 1 : Infinity}
-        />
-      )}
+      {ready && <SoftShadow position={[0, -1.85, 0]} scale={4.2} opacity={0.3} />}
     </Canvas>
   );
 }
