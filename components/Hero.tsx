@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import CityLinks from "@/components/CityLinks";
 import MagneticButton from "@/components/ui/MagneticButton";
-import { hasWebGL, isSmallScreen, useCanvasVisibility } from "@/components/three/useCanvasVisibility";
+import { hasWebGL, isSmallScreen, useCanvasVisibility, whenIdle } from "@/components/three/useCanvasVisibility";
 import { siteConfig } from "@/lib/utils";
 
 const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
@@ -33,9 +33,15 @@ export default function Hero() {
   const [webgl, setWebgl] = useState<boolean | null>(null);
   const [quality, setQuality] = useState<"high" | "low">("high");
 
+  const [mount3d, setMount3d] = useState(false);
+  const [ready3d, setReady3d] = useState(false);
+  const onReady = useCallback(() => setReady3d(true), []);
+
   useEffect(() => {
     setWebgl(hasWebGL());
     setQuality(isSmallScreen() ? "low" : "high");
+    // 3D сцената стартира чак след като текстът е показан и браузърът е свободен
+    return whenIdle(() => setMount3d(true), 700);
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -66,14 +72,14 @@ export default function Hero() {
         className="absolute inset-x-0 top-[7svh] h-[46svh] md:inset-y-0 md:left-auto md:right-0 md:top-0 md:h-full md:w-[58%]"
         aria-hidden="true"
       >
-        {webgl && (
+        {webgl && mount3d && (
           <motion.div
             className="absolute inset-0"
             initial={{ opacity: 0, scale: reduce ? 1 : 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.6, ease, delay: 0.2 }}
+            animate={ready3d ? { opacity: 1, scale: 1 } : { opacity: 0, scale: reduce ? 1 : 0.92 }}
+            transition={{ duration: 1.4, ease }}
           >
-            <HeroScene reduceMotion={reduce} active={visible} quality={quality} />
+            <HeroScene reduceMotion={reduce} active={visible} quality={quality} onReady={onReady} />
           </motion.div>
         )}
         {webgl === false && (

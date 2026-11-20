@@ -13,7 +13,7 @@ import {
 } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import SmileStageSvg from "@/components/OrthodonticsSvgStage";
-import { hasWebGL, isSmallScreen, useCanvasVisibility } from "@/components/three/useCanvasVisibility";
+import { hasWebGL, isSmallScreen, useCanvasVisibility, whenIdle } from "@/components/three/useCanvasVisibility";
 
 const ArchScene = dynamic(() => import("@/components/three/ArchScene"), { ssr: false });
 
@@ -170,12 +170,22 @@ export default function OrthodonticsSection() {
   const stageRef = useRef<HTMLDivElement>(null);
   const reduceMotion = !!useReducedMotion();
   const visible = useCanvasVisibility(stageRef, "100px");
+  // сцената се създава чак когато секцията наближи (веднъж създадена — остава)
+  const near = useCanvasVisibility(sectionRef, "120% 0px", true);
   const [webgl, setWebgl] = useState<boolean | null>(null);
   const [quality, setQuality] = useState<"high" | "low">("high");
 
   useEffect(() => {
-    setWebgl(hasWebGL());
-    setQuality(isSmallScreen() ? "low" : "high");
+    const ok = hasWebGL();
+    setWebgl(ok);
+    const small = isSmallScreen();
+    setQuality(small ? "low" : "high");
+    if (!ok) return;
+    // в свободно време: изтегляме кода на сцената и строим зъбите във worker-а
+    return whenIdle(() => {
+      void import("@/components/three/ArchScene");
+      void import("@/lib/three/archTeeth").then((m) => m.preloadArchTeeth());
+    }, 2500);
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -209,7 +219,7 @@ export default function OrthodonticsSection() {
 
         <div className="absolute inset-0 pt-[var(--header-offset)]">
           <div className="relative h-[66%] w-full md:h-[88%]">
-            {webgl && (
+            {webgl && near && (
               <ArchScene progress={smooth} reduceMotion={reduceMotion} active={visible} quality={quality} />
             )}
             {webgl === false && <SmileStageSvg progress={smooth} reduceMotion={reduceMotion} />}

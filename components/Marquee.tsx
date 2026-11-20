@@ -27,7 +27,7 @@ export default function Marquee({ items, className }: { items: Testimonial[]; cl
               <blockquote
                 key={`${item.id}-${i}`}
                 aria-hidden={i >= row.length}
-                className="glass-card w-[300px] shrink-0 p-7 md:w-[420px]"
+                className="w-[300px] shrink-0 rounded-[1.75rem] border border-white bg-white/85 p-7 shadow-card md:w-[420px]"
               >
                 <Quote className="h-6 w-6 text-gold/70" strokeWidth={1.2} aria-hidden="true" />
                 <p className="mt-4 font-display text-lg leading-snug text-ink md:text-xl">{item.quote}</p>

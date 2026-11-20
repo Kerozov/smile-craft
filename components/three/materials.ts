@@ -34,8 +34,6 @@ export function createPearlMaterial() {
     roughness: 0.18,
     clearcoat: 1,
     clearcoatRoughness: 0.05,
-    iridescence: 0.6,
-    iridescenceIOR: 1.3,
     sheen: 1,
     sheenColor: new Color("#f3e3cf"),
   });

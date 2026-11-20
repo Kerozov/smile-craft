@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows } from "@react-three/drei";
 import type { MotionValue } from "framer-motion";
@@ -20,8 +20,10 @@ import {
   Vector3,
 } from "three";
 import StudioLights from "./StudioLights";
+import Warmup from "./Warmup";
 import { createEnamelMaterial, createGoldMaterial } from "./materials";
-import { getCrownGeometry, type ToothKind } from "@/lib/three/toothGeometry";
+import type { ToothKind } from "@/lib/three/toothGeometry";
+import { loadArchTeeth, type ArchGeometries } from "@/lib/three/archTeeth";
 
 /* ------------------------------------------------------------------ */
 /*  Зъбна дъга                                                         */
@@ -85,10 +87,9 @@ type Slot = {
   front: number;
 };
 
-const box = (kind: ToothKind) => getCrownGeometry(kind, 52).boundingBox!;
-
 /** Дъгата се мащабира така, че зъбите да се допират плътно */
-const { ARCH_CURVE, SLOTS } = (() => {
+function buildLayout(geos: ArchGeometries) {
+  const box = (kind: ToothKind) => geos[kind].boundingBox!;
   const widths = PLAN.map((p) => {
     const b = box(p.kind);
     return (b.max.x - b.min.x) * p.s * 0.9;
@@ -126,8 +127,8 @@ const { ARCH_CURVE, SLOTS } = (() => {
       front: b.max.z * p.s,
     };
   });
-  return { ARCH_CURVE: curve, SLOTS: slots };
-})();
+  return { curve, slots };
+}
 
 function bracketPoint(slot: Slot, extra = 0) {
   return slot.pos
@@ -139,8 +140,8 @@ function bracketPoint(slot: Slot, extra = 0) {
 const GUM_Y = -0.42;
 const GUM_R = 0.34;
 
-function buildGum() {
-  const pts = ARCH_CURVE.getSpacedPoints(80).map((p) => new Vector3(p.x, 0, p.z));
+function buildGum(curveIn: CatmullRomCurve3) {
+  const pts = curveIn.getSpacedPoints(80).map((p) => new Vector3(p.x, 0, p.z));
   const curve = new CatmullRomCurve3(pts, false, "centripetal");
   return {
     tube: new TubeGeometry(curve, 220, GUM_R, 28, false),
@@ -149,7 +150,7 @@ function buildGum() {
 }
 
 /** Две половини на дъгата — от центъра към всеки край */
-function buildWires() {
+function buildWires(SLOTS: Slot[]) {
   const mid = SLOTS.length / 2;
   const center = bracketPoint(SLOTS[mid - 1], 0.03).lerp(bracketPoint(SLOTS[mid], 0.03), 0.5);
   const right = SLOTS.slice(mid).map((s) => bracketPoint(s, 0.03));
@@ -195,7 +196,16 @@ function sampleCamera(p: number, out: Vector3, look: Vector3) {
 
 /* ------------------------------------------------------------------ */
 
-function Arch({ progress, reduceMotion }: { progress: MotionValue<number>; reduceMotion: boolean }) {
+function Arch({
+  progress,
+  reduceMotion,
+  geos,
+}: {
+  progress: MotionValue<number>;
+  reduceMotion: boolean;
+  geos: ArchGeometries;
+}) {
+  const { curve: ARCH_CURVE, slots: SLOTS } = useMemo(() => buildLayout(geos), [geos]);
   const enamel = useMemo(() => createEnamelMaterial(), []);
   const gold = useMemo(() => createGoldMaterial(), []);
   // отделен материал за всеки брекет — появяват се един след друг
@@ -206,7 +216,7 @@ function Arch({ progress, reduceMotion }: { progress: MotionValue<number>; reduc
         m.transparent = true;
         return m;
       }),
-    []
+    [SLOTS]
   );
   const wireMat = useMemo(() => {
     const m = new MeshStandardMaterial({ color: "#cfb084", metalness: 1, roughness: 0.18, transparent: true });
@@ -224,16 +234,8 @@ function Arch({ progress, reduceMotion }: { progress: MotionValue<number>; reduc
     []
   );
 
-  const geos = useMemo(() => {
-    const kinds: ToothKind[] = ["molar", "premolar", "canine", "lateral", "incisor"];
-    return Object.fromEntries(kinds.map((k) => [k, getCrownGeometry(k, 52)])) as Record<
-      ToothKind,
-      ReturnType<typeof getCrownGeometry>
-    >;
-  }, []);
-
-  const wires = useMemo(() => buildWires(), []);
-  const gum = useMemo(() => buildGum(), []);
+  const wires = useMemo(() => buildWires(SLOTS), [SLOTS]);
+  const gum = useMemo(() => buildGum(ARCH_CURVE), [ARCH_CURVE]);
   const gumMat = useMemo(
     () =>
       new MeshPhysicalMaterial({
@@ -393,24 +395,37 @@ export default function ArchScene({
   active: boolean;
   quality: "high" | "low";
 }) {
+  const [geos, setGeos] = useState<ArchGeometries | null>(null);
+  const [compiled, setCompiled] = useState(false);
+  const onCompiled = useCallback(() => setCompiled(true), []);
+  useEffect(() => {
+    let alive = true;
+    loadArchTeeth().then((g) => alive && setGeos(g));
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   return (
     <Canvas
       className="!absolute inset-0"
-      dpr={quality === "high" ? [1, 1.75] : [1, 1.4]}
-      frameloop={active ? "always" : "never"}
+      dpr={quality === "high" ? [1, 1.5] : [1, 1.25]}
+      frameloop={active && compiled ? "always" : "never"}
       camera={{ position: [0, 0.9, 4.6], fov: 32 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
     >
       <StudioLights />
-      <Arch progress={progress} reduceMotion={reduceMotion} />
+      <Warmup when={!!geos} onDone={onCompiled} />
+      {geos && <Arch progress={progress} reduceMotion={reduceMotion} geos={geos} />}
       <ContactShadows
         position={[0, -0.72, -0.1]}
         opacity={0.3}
         scale={4.5}
         blur={2.2}
         far={1.2}
-        resolution={512}
+        resolution={256}
         color="#8a6e4c"
+        frames={geos ? 60 : 0}
       />
     </Canvas>
   );
