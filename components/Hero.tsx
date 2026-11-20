@@ -40,8 +40,16 @@ export default function Hero() {
   useEffect(() => {
     setWebgl(hasWebGL());
     setQuality(isSmallScreen() ? "low" : "high");
-    // 3D сцената стартира чак след като текстът е показан и браузърът е свободен
-    return whenIdle(() => setMount3d(true), 700);
+    // 3D сцената стартира чак след като началната анимация на текста приключи
+    // и браузърът е свободен — така отварянето е гладко
+    let cancelIdle = () => {};
+    const t = window.setTimeout(() => {
+      cancelIdle = whenIdle(() => setMount3d(true), 600);
+    }, 1500);
+    return () => {
+      window.clearTimeout(t);
+      cancelIdle();
+    };
   }, []);
 
   const { scrollYProgress } = useScroll({

@@ -171,7 +171,9 @@ export default function OrthodonticsSection() {
   const reduceMotion = !!useReducedMotion();
   const visible = useCanvasVisibility(stageRef, "100px");
   // сцената се създава чак когато секцията наближи (веднъж създадена — остава)
-  const near = useCanvasVisibility(sectionRef, "120% 0px", true);
+  // (и чак след първия скрол — секцията е точно под hero и иначе тръгва при отварянето)
+  const near = useCanvasVisibility(sectionRef, "80% 0px", true);
+  const [armed, setArmed] = useState(false);
   const [webgl, setWebgl] = useState<boolean | null>(null);
   const [quality, setQuality] = useState<"high" | "low">("high");
 
@@ -181,11 +183,27 @@ export default function OrthodonticsSection() {
     const small = isSmallScreen();
     setQuality(small ? "low" : "high");
     if (!ok) return;
-    // в свободно време: изтегляме кода на сцената и строим зъбите във worker-а
-    return whenIdle(() => {
-      void import("@/components/three/ArchScene");
-      void import("@/lib/three/archTeeth").then((m) => m.preloadArchTeeth());
-    }, 2500);
+    // при първия скрол (или след няколко секунди): изтегляме кода на сцената и
+    // строим зъбите във worker-а — не пречи на отварянето на страницата
+    let cancelIdle = () => {};
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      setArmed(true);
+      window.removeEventListener("scroll", start);
+      cancelIdle = whenIdle(() => {
+        void import("@/components/three/ArchScene");
+        void import("@/lib/three/archTeeth").then((m) => m.preloadArchTeeth());
+      }, 1500);
+    };
+    window.addEventListener("scroll", start, { passive: true });
+    const t = window.setTimeout(start, 5000);
+    return () => {
+      window.removeEventListener("scroll", start);
+      window.clearTimeout(t);
+      cancelIdle();
+    };
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -219,7 +237,7 @@ export default function OrthodonticsSection() {
 
         <div className="absolute inset-0 pt-[var(--header-offset)]">
           <div className="relative h-[66%] w-full md:h-[88%]">
-            {webgl && near && (
+            {webgl && near && armed && (
               <ArchScene progress={smooth} reduceMotion={reduceMotion} active={visible} quality={quality} />
             )}
             {webgl === false && <SmileStageSvg progress={smooth} reduceMotion={reduceMotion} />}
