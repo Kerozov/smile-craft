@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  serverExternalPackages: ["@libsql/client", "libsql"],
   // three.js и drei се зареждат само в браузъра (dynamic import, ssr: false)
   transpilePackages: ["three"],
   experimental: {

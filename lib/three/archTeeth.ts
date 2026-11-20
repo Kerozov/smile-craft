@@ -13,7 +13,3 @@ export function loadArchTeeth(): Promise<ArchGeometries> {
     (geos) => Object.fromEntries(ARCH_KINDS.map((k, i) => [k, geos[i]])) as ArchGeometries
   );
 }
-
-export function preloadArchTeeth() {
-  void loadArchTeeth();
-}

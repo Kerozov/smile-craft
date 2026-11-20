@@ -7,18 +7,16 @@ import { siteConfig } from "@/lib/utils";
 import "./globals.css";
 
 const display = Playfair_Display({
-  subsets: ["latin", "cyrillic"],
+  subsets: ["cyrillic"],
   variable: "--font-display",
-  weight: ["400", "500"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
 // Poppins няма кирилица — текстът падаше на системен шрифт. Manrope я има.
 const body = Manrope({
-  subsets: ["latin", "cyrillic"],
+  subsets: ["cyrillic"],
   variable: "--font-body",
-  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 

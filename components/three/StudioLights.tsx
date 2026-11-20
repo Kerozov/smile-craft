@@ -6,14 +6,14 @@ import { Environment, Lightformer } from "@react-three/drei";
  * Светло студийно осветление. Отраженията идват от локални Lightformer-и
  * (без HDR файлове от мрежата), за да зарежда бързо и да няма външни заявки.
  */
-export default function StudioLights() {
+export default function StudioLights({ environmentIntensity = 1 }: { environmentIntensity?: number }) {
   return (
     <>
       <ambientLight intensity={0.55} color="#fff8ef" />
       <directionalLight position={[3, 5, 4]} intensity={1.6} color="#fffaf3" />
       <directionalLight position={[-4, 2, -2]} intensity={0.6} color="#ffe7cf" />
 
-      <Environment resolution={128} frames={1}>
+      <Environment resolution={128} frames={1} environmentIntensity={environmentIntensity}>
         <color attach="background" args={["#f6efe6"]} />
         <Lightformer
           form="rect"

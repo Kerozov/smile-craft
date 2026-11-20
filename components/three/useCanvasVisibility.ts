@@ -3,26 +3,19 @@
 import { useEffect, useState, type RefObject } from "react";
 
 /** Пауза на WebGL рендера, когато сцената не е на екрана (батерия и FPS) */
-export function useCanvasVisibility(ref: RefObject<Element | null>, rootMargin = "200px", latch = false) {
+export function useCanvasVisibility(ref: RefObject<Element | null>, rootMargin: string) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      ([entry]) => {
-        if (latch) {
-          if (entry.isIntersecting) {
-            setVisible(true);
-            io.disconnect();
-          }
-        } else setVisible(entry.isIntersecting);
-      },
+      ([entry]) => setVisible(entry.isIntersecting),
       { rootMargin }
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [ref, rootMargin, latch]);
+  }, [ref, rootMargin]);
 
   return visible;
 }
@@ -33,7 +26,7 @@ export function hasWebGL() {
   if (webglSupport !== null) return webglSupport;
   try {
     const canvas = document.createElement("canvas");
-    const gl = (canvas.getContext("webgl2") || canvas.getContext("webgl")) as WebGLRenderingContext | null;
+    const gl = canvas.getContext("webgl2");
     webglSupport = !!gl;
     // освобождаваме пробния контекст веднага — браузърите имат лимит на WebGL контекстите
     gl?.getExtension("WEBGL_lose_context")?.loseContext();

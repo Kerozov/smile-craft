@@ -12,10 +12,10 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import SmileStageSvg from "@/components/OrthodonticsSvgStage";
 import { hasWebGL, isSmallScreen, useCanvasVisibility, whenIdle } from "@/components/three/useCanvasVisibility";
 
 const ArchScene = dynamic(() => import("@/components/three/ArchScene"), { ssr: false });
+const SmileStageSvg = dynamic(() => import("@/components/OrthodonticsSvgStage"), { ssr: false });
 
 /**
  * Scrollytelling за ортодонтия — в истинско 3D.
@@ -169,42 +169,17 @@ export default function OrthodonticsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const reduceMotion = !!useReducedMotion();
-  const visible = useCanvasVisibility(stageRef, "100px");
-  // сцената се създава чак когато секцията наближи (веднъж създадена — остава)
-  // (и чак след първия скрол — секцията е точно под hero и иначе тръгва при отварянето)
-  const near = useCanvasVisibility(sectionRef, "80% 0px", true);
-  const [armed, setArmed] = useState(false);
+  const visible = useCanvasVisibility(stageRef, "48px 0px");
   const [webgl, setWebgl] = useState<boolean | null>(null);
   const [quality, setQuality] = useState<"high" | "low">("high");
 
   useEffect(() => {
-    const ok = hasWebGL();
-    setWebgl(ok);
-    const small = isSmallScreen();
-    setQuality(small ? "low" : "high");
-    if (!ok) return;
-    // при първия скрол (или след няколко секунди): изтегляме кода на сцената и
-    // строим зъбите във worker-а — не пречи на отварянето на страницата
-    let cancelIdle = () => {};
-    let started = false;
-    const start = () => {
-      if (started) return;
-      started = true;
-      setArmed(true);
-      window.removeEventListener("scroll", start);
-      cancelIdle = whenIdle(() => {
-        void import("@/components/three/ArchScene");
-        void import("@/lib/three/archTeeth").then((m) => m.preloadArchTeeth());
-      }, 1500);
-    };
-    window.addEventListener("scroll", start, { passive: true });
-    const t = window.setTimeout(start, 5000);
-    return () => {
-      window.removeEventListener("scroll", start);
-      window.clearTimeout(t);
-      cancelIdle();
-    };
-  }, []);
+    if (!visible || webgl !== null) return;
+    return whenIdle(() => {
+      setQuality(isSmallScreen() ? "low" : "high");
+      setWebgl(hasWebGL());
+    });
+  }, [visible, webgl]);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -237,7 +212,7 @@ export default function OrthodonticsSection() {
 
         <div className="absolute inset-0 pt-[var(--header-offset)]">
           <div className="relative h-[66%] w-full md:h-[88%]">
-            {webgl && near && armed && (
+            {webgl && (
               <ArchScene progress={smooth} reduceMotion={reduceMotion} active={visible} quality={quality} />
             )}
             {webgl === false && <SmileStageSvg progress={smooth} reduceMotion={reduceMotion} />}

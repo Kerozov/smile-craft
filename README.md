@@ -13,7 +13,7 @@ bun run build   # продукционен билд + lint + типове
 
 ## 3D сцени
 
-- `components/three/HeroScene.tsx` — 3D молар в началото (паралакс към курсора и скрола).
+- На началния екран се показва готов кадър на молара (`public/hero-molar.webp`). Бутонът „Виж в 3D“ зарежда интерактивния модел от `components/three/HeroScene.tsx`.
 - `components/three/ArchScene.tsx` — ортодонтската история: зъбна дъга, която се
   подрежда при скрол (криви зъби → дигитален план → брекети и дъга → равна усмивка).
 - `lib/three/toothGeometry.ts` — зъбите се генерират процедурно (SDF + marching cubes),
