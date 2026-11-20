@@ -1,6 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Check, Phone } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { locationList } from "@/lib/locations";
 import { services } from "@/lib/services";
@@ -18,10 +20,10 @@ const gradMap: Record<string, LocationSlug> = {
 };
 
 const inputClass =
-  "w-full rounded-lg border border-beige-pale bg-bg-white px-4 py-3 font-body text-text-dark placeholder:text-text-muted/50 focus:border-beige-primary focus:outline-none focus:ring-1 focus:ring-beige-primary/30";
+  "w-full rounded-2xl border border-ink/[0.08] bg-white/90 px-5 py-4 font-body text-[15px] text-ink shadow-inner-light transition-[border-color,box-shadow] duration-300 placeholder:text-ink-muted/60 focus:border-gold/60 focus:outline-none focus:ring-4 focus:ring-gold-light/40";
 
 const labelClass =
-  "mb-2 block font-body text-xs font-medium uppercase tracking-wider text-text-muted";
+  "mb-2 block font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-muted";
 
 export default function BookingForm({ className }: BookingFormProps) {
   const searchParams = useSearchParams();
@@ -32,43 +34,78 @@ export default function BookingForm({ className }: BookingFormProps) {
     ? serviceParam
     : "";
 
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState<null | { email: string; phone: string; city: string }>(null);
+  const [today, setToday] = useState<string>();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    setToday(new Date().toISOString().slice(0, 10));
+  }, []);
+
+  /**
+   * Няма backend за заявки, затова досега формата само показваше „Благодарим“
+   * и заявката се губеше. Сега се отваря имейл до избрания кабинет с всички
+   * попълнени данни, а пациентът вижда и телефона за директна връзка.
+   */
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    setLoading(false);
-    setSubmitted(true);
+    const data = new FormData(e.currentTarget);
+    const loc = locationList.find((l) => l.slug === data.get("location")) ?? locationList[0];
+    const service = services.find((s) => s.id === data.get("service"));
+
+    const lines = [
+      `Име: ${data.get("name")}`,
+      `Телефон: ${data.get("phone")}`,
+      data.get("email") ? `Имейл: ${data.get("email")}` : "",
+      `Кабинет: ${loc.nameBg}`,
+      service ? `Услуга: ${service.title}` : "",
+      data.get("date") ? `Предпочитана дата: ${data.get("date")}` : "",
+      data.get("message") ? `\nСъобщение:\n${data.get("message")}` : "",
+    ].filter(Boolean);
+
+    const subject = `Заявка за час — ${loc.nameBg}`;
+    window.location.href = `mailto:${loc.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+    setSent({ email: loc.email, phone: loc.phone, city: loc.nameBg });
   };
 
-  if (submitted) {
+  if (sent) {
     return (
-      <div
-        className={cn(
-          "rounded-xl border border-beige-pale bg-bg-white p-10 text-center shadow-soft",
-          className
-        )}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className={cn("py-6 text-center", className)}
+        role="status"
       >
-        <p className="font-display text-2xl font-normal text-text-dark">
-          Благодарим ви!
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-gold-light to-gold text-white shadow-glow">
+          <Check className="h-7 w-7" aria-hidden="true" />
+        </span>
+        <p className="mt-8 font-display text-3xl text-ink">Почти готово!</p>
+        <p className="mx-auto mt-4 max-w-sm font-body text-ink-soft">
+          Отворихме имейл до кабинета в {sent.city} с вашата заявка — натиснете
+          „Изпрати“ в пощата си. Ако имейлът не се отвори, обадете ни се:
         </p>
-        <p className="mt-4 font-body text-text-muted">
-          Получихме заявката ви. Екипът на Smile Craft ще се свърже с вас в
-          рамките на един работен ден.
-        </p>
-      </div>
+        <a href={`tel:${sent.phone.replace(/\s/g, "")}`} className="btn-primary mt-8">
+          <Phone className="h-4 w-4" aria-hidden="true" />
+          {sent.phone}
+        </a>
+        <button
+          type="button"
+          onClick={() => setSent(null)}
+          className="mt-6 block w-full font-body text-xs font-semibold uppercase tracking-[0.2em] text-ink-muted hover:text-gold-deep"
+        >
+          Назад към формата
+        </button>
+      </motion.div>
     );
   }
 
   return (
     <form
       onSubmit={handleSubmit}
-      className={cn("space-y-6", className)}
+      className={cn("space-y-5", className)}
       aria-label="Форма за записване на час"
     >
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-5 md:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelClass}>
             Име и фамилия *
@@ -113,7 +150,7 @@ export default function BookingForm({ className }: BookingFormProps) {
         />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-5 md:grid-cols-2">
         <div>
           <label htmlFor="location" className={labelClass}>
             Локация *
@@ -154,7 +191,7 @@ export default function BookingForm({ className }: BookingFormProps) {
         <label htmlFor="date" className={labelClass}>
           Предпочитана дата
         </label>
-        <input id="date" name="date" type="date" className={inputClass} />
+        <input id="date" name="date" type="date" min={today} className={inputClass} />
       </div>
 
       <div>
@@ -170,13 +207,12 @@ export default function BookingForm({ className }: BookingFormProps) {
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="btn-primary w-full disabled:opacity-60 md:w-auto"
-      >
-        {loading ? "Изпращане..." : "Изпрати заявка"}
-      </button>
+      <div className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-center sm:justify-between">
+        <p className="font-body text-xs text-ink-muted">* задължителни полета</p>
+        <button type="submit" className="btn-primary w-full sm:w-auto">
+          Изпрати заявка
+        </button>
+      </div>
     </form>
   );
 }

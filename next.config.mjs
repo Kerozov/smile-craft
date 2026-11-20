@@ -1,12 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "placehold.co",
-      },
-    ],
+  // three.js и drei се зареждат само в браузъра (dynamic import, ssr: false)
+  transpilePackages: ["three"],
+  experimental: {
+    optimizePackageImports: ["lucide-react", "@react-three/drei"],
   },
 };
 

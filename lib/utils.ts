@@ -30,14 +30,8 @@ export const categoryLabels: Record<ResultCategory, string> = {
   aesthetic: "Естетична стоматология",
 };
 
-/** Placeholder images — TODO: replace with real photos */
-export function placeholderBefore(id: string) {
-  return `https://placehold.co/600x450/F7F4EF/9A7B55/png?text=Преди+${id}`;
-}
-
-export function placeholderAfter(id: string) {
-  return `https://placehold.co/600x450/EDE8E0/B8956A/png?text=След+${id}`;
-}
-
-export const portraitPlaceholder =
-  "https://placehold.co/600x750/F7F4EF/B8956A/png?text=Д-р+Овардова";
+/**
+ * Снимка на д-р Овардова. Сложете файла в /public (напр. "/dr-ovardova.jpg")
+ * и попълнете пътя тук — дотогава се показва елегантен монограм.
+ */
+export const doctorPhoto: string | null = null;

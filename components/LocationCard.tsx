@@ -1,59 +1,46 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { ArrowUpRight, Clock, MapPin, Phone } from "lucide-react";
+import TiltCard from "@/components/ui/TiltCard";
 import type { Location } from "@/lib/locations";
-import { cn } from "@/lib/utils";
 
-interface LocationCardProps {
-  location: Location;
-  className?: string;
-}
-
-export default function LocationCard({ location, className }: LocationCardProps) {
-  const shouldReduceMotion = useReducedMotion();
-
+export default function LocationCard({ location, index = 0 }: { location: Location; index?: number }) {
   return (
-    <motion.div
-      className={cn(
-        "rounded-xl border border-beige-pale bg-bg-white p-8 shadow-soft",
-        className
-      )}
-      whileHover={
-        shouldReduceMotion
-          ? undefined
-          : { y: -4, boxShadow: "0 16px 48px rgba(61, 54, 50, 0.12)" }
-      }
-      transition={{ duration: 0.2 }}
-    >
-      <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-beige-pale">
-          <MapPin
-            className="h-5 w-5 text-beige-primary"
-            aria-hidden="true"
-          />
-        </div>
-        <div>
-          <h3 className="font-display text-2xl font-normal text-text-dark">
-            {location.nameBg}
-          </h3>
-          <p className="mt-2 font-body text-sm leading-relaxed text-text-muted">
-            {location.address}
-            <br />
-            {location.postalCode} {location.city}
-          </p>
-          <p className="mt-4 font-body text-xs text-text-muted">
-            {location.hours[0]}
-          </p>
-          <Link
-            href={`/${location.slug}`}
-            className="mt-6 inline-block font-body text-sm text-beige-primary transition-colors hover:text-beige-deep"
-          >
-            Виж кабинета →
-          </Link>
-        </div>
+    <TiltCard className="flex h-full flex-col overflow-hidden p-7 md:p-9">
+      <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(227,203,166,0.45),transparent_70%)]" aria-hidden="true" />
+      <div className="flex items-center justify-between [transform:translateZ(30px)]">
+        <span className="font-body text-[11px] font-semibold uppercase tracking-[0.3em] text-gold-deep">
+          Кабинет {String(index + 1).padStart(2, "0")}
+        </span>
+        <MapPin className="h-5 w-5 text-gold" strokeWidth={1.4} aria-hidden="true" />
       </div>
-    </motion.div>
+
+      <h3 className="mt-10 font-display text-4xl font-normal text-ink md:text-5xl [transform:translateZ(40px)]">
+        {location.nameBg}
+      </h3>
+
+      <div className="mt-6 space-y-3 font-body text-sm text-ink-soft [transform:translateZ(20px)]">
+        <p className="flex gap-3">
+          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} aria-hidden="true" />
+          <span>
+            {location.address}, {location.postalCode} {location.city}
+          </span>
+        </p>
+        <p className="flex gap-3">
+          <Clock className="mt-0.5 h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} aria-hidden="true" />
+          <span>{location.hours[0]}</span>
+        </p>
+        <p className="flex gap-3">
+          <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} aria-hidden="true" />
+          <span>{location.phone}</span>
+        </p>
+      </div>
+
+      <Link href={`/${location.slug}`} className="link-arrow mt-auto pt-10 after:absolute after:inset-0">
+        Виж кабинета
+        <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+      </Link>
+    </TiltCard>
   );
 }
